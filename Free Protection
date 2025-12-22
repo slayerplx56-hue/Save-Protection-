@@ -4,38 +4,52 @@ app.use(express.json());
 
 const PORT = 3000;
 
-/* FREE LICENSES */
-const licenses = {
-  "FREE-1111-AAAA": { project: "MyGame" }
-};
+/* FREE LICENSE (shared) */
+const FREE_KEY = "FREE-20-ACCESS";
 
-/* BASIC RATE LIMIT */
-const attempts = {};
+/* BASIC STATE */
+const rate = {};
+const blockedIPs = {};
+
+/* HELPERS */
+function rateLimited(ip) {
+  rate[ip] = (rate[ip] || 0) + 1;
+  return rate[ip] > 15; // per minute (simple)
+}
 
 app.post("/validate", (req, res) => {
   const ip = req.ip;
-  const { license, project } = req.body;
+  const { license, project, timestamp } = req.body;
 
-  attempts[ip] = (attempts[ip] || 0) + 1;
-  if (attempts[ip] > 10) {
+  if (blockedIPs[ip]) {
+    return res.json({ valid: false, reason: "IP blocked" });
+  }
+
+  if (rateLimited(ip)) {
+    blockedIPs[ip] = true; // auto-block spam
     return res.json({ valid: false, reason: "Too many requests" });
   }
 
-  if (!licenses[license]) {
-    return res.json({ valid: false, reason: "Invalid license" });
+  if (license !== FREE_KEY) {
+    return res.json({ valid: false, reason: "Invalid key" });
   }
 
-  if (licenses[license].project !== project) {
+  if (project !== "MyGame") {
     return res.json({ valid: false, reason: "Project mismatch" });
+  }
+
+  // basic replay protection (60s)
+  if (Math.abs(Date.now() - timestamp) > 60000) {
+    return res.json({ valid: false, reason: "Replay blocked" });
   }
 
   return res.json({
     valid: true,
     level: "FREE",
-    message: "Free protection active"
+    message: "Free 20% protection active"
   });
 });
 
 app.listen(PORT, () =>
-  console.log("Free protection running")
+  console.log("Free 20% protection running")
 );
