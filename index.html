@@ -7,16 +7,15 @@
 
 <style>
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
 }
 
 body {
-  min-height: 100vh;
+  background: linear-gradient(to bottom, #0b1d3a, #020b18);
   color: white;
-  background: radial-gradient(circle at top, #0b2a44, #000814);
   overflow-x: hidden;
 }
 
@@ -28,122 +27,76 @@ canvas {
   z-index: -1;
 }
 
-/* Layout */
-header {
-  text-align: center;
-  padding: 90px 20px;
-}
-
-header h1 {
-  font-size: 3.5rem;
-  margin-bottom: 15px;
-}
-
-header p {
-  font-size: 1.2rem;
-  opacity: 0.9;
-}
-
-.buttons {
-  margin-top: 40px;
+/* Navigation */
+nav {
   display: flex;
-  gap: 30px;
   justify-content: center;
-  flex-wrap: wrap;
+  gap: 40px;
+  padding: 30px;
 }
 
-button {
-  padding: 16px 38px;
-  font-size: 1.1rem;
-  border-radius: 10px;
-  border: none;
+nav button {
+  background: none;
+  border: 2px solid #ccc;
+  color: #ccc;
+  font-size: 24px;
+  padding: 15px 40px;
+  border-radius: 40px;
   cursor: pointer;
-  background: #bdbdbd;
-  color: black;
-  transition: transform 0.2s;
+  transition: 0.3s;
 }
 
-button:hover {
-  transform: scale(1.08);
+nav button:hover {
+  background: #ccc;
+  color: black;
 }
 
 /* Sections */
 section {
-  max-width: 900px;
-  margin: 120px auto;
-  padding: 60px 30px;
-  background: rgba(0,0,0,0.65);
-  border-radius: 20px;
+  display: none;
+  padding: 80px 20px;
   text-align: center;
 }
 
-section h2 {
-  font-size: 2.5rem;
+section.active {
+  display: block;
+}
+
+h1 {
+  font-size: 48px;
   margin-bottom: 30px;
+  color: lightblue;
 }
 
-section p {
-  font-size: 1.1rem;
-  line-height: 1.8;
-  margin-bottom: 20px;
-}
-
-/* Protection cards */
-.cards {
-  display: flex;
-  gap: 30px;
-  justify-content: center;
-  flex-wrap: wrap;
+h2 {
+  font-size: 36px;
   margin-top: 40px;
 }
 
-.card {
-  width: 300px;
-  padding: 30px;
-  border-radius: 15px;
-  background: rgba(255,255,255,0.1);
+p {
+  max-width: 800px;
+  margin: 20px auto;
+  font-size: 18px;
+  line-height: 1.6;
 }
 
-.card h3 {
-  font-size: 1.8rem;
-  margin-bottom: 15px;
+/* Contact button */
+.contact {
+  margin-top: 40px;
 }
 
-.free {
-  border: 2px solid lightgreen;
+.contact a {
+  background: white;
+  color: black;
+  padding: 15px 35px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-size: 20px;
+  transition: 0.3s;
 }
 
-.pro {
-  border: 2px solid red;
-}
-
-.card span {
-  display: block;
-  font-size: 1.3rem;
-  margin-bottom: 15px;
-}
-
-/* Free protection form */
-input {
-  width: 100%;
-  max-width: 400px;
-  padding: 12px;
-  margin: 10px 0;
-  border-radius: 8px;
-  border: none;
-}
-
-#status {
-  margin-top: 20px;
-  font-size: 1.1rem;
-  color: lightgreen;
-}
-
-/* Footer */
-footer {
-  text-align: center;
-  padding: 40px;
-  opacity: 0.7;
+.contact a:hover {
+  background: lightblue;
 }
 </style>
 </head>
@@ -152,100 +105,55 @@ footer {
 
 <canvas id="snow"></canvas>
 
-<header>
-  <h1>Save Protection</h1>
-  <p>Security, monitoring, and risk reduction for games & websites</p>
+<nav>
+  <button onclick="showSection('home')">Home</button>
+  <button onclick="showSection('info')">Information</button>
+</nav>
 
-  <div class="buttons">
-    <button onclick="scrollToSection('info')">Information</button>
-    <button onclick="scrollToSection('free')">Free Protection</button>
-    <button onclick="scrollToSection('pro')">Pro Protection</button>
-  </div>
-</header>
+<section id="home" class="active">
+  <h1>Welcome to our Protection Website</h1>
+  <p>
+    We help protect your game or website from basic attacks, abuse,
+    and unauthorized usage.
+  </p>
+</section>
 
 <section id="info">
-  <h2>What We Actually Do</h2>
+  <h1>Information</h1>
 
+  <h2>What does our protection do?</h2>
   <p>
-    Save Protection is a protection and monitoring service designed to help
-    reduce risks related to hacking, cheating, piracy, and unauthorized copying.
+    Our free protection system helps reduce small attacks,
+    basic hacking attempts, fake requests, and misuse.
+    It verifies access and adds a simple security layer.
   </p>
 
+  <h2>What it can protect</h2>
   <p>
-    No software is 100% unhackable. Instead of false promises, we focus on
-    detection, prevention layers, and visibility so threats can be identified
-    early.
+    • Basic API abuse<br>
+    • Fake users<br>
+    • Simple exploits<br>
+    • Unauthorized access attempts
   </p>
 
+  <h2>Important to know</h2>
   <p>
-    Our platform acts as a control center where developers can register projects,
-    track protection status, and apply security layers over time.
-  </p>
-</section>
-
-<section id="free">
-  <h2>Free Protection</h2>
-
-  <p>
-    Free Protection provides a basic level of security awareness and project
-    registration. It is ideal for small projects, testing, and early development.
+    This is a basic protection layer.
+    No system can stop everything,
+    but this helps improve safety.
   </p>
 
-  <div class="cards">
-    <div class="card free">
-      <h3>Free</h3>
-      <span>€0</span>
-      <p>
-        ✔ Project registration<br>
-        ✔ Basic monitoring status<br>
-        ✔ License ID simulation<br>
-        ✔ Entry-level risk reduction<br>
-        ❌ No advanced detection
-      </p>
-    </div>
+  <div class="contact">
+    <a href="mailto:your@email.com">Contact Us</a>
   </div>
-
-  <input id="projectName" placeholder="Game or Website name">
-  <br>
-  <button onclick="activateProtection()">Activate Free Protection</button>
-  <p id="status"></p>
 </section>
-
-<section id="pro">
-  <h2>Pro Protection</h2>
-
-  <p>
-    Pro Protection is designed for serious developers who need stronger
-    safeguards, better monitoring, and predictive analysis.
-  </p>
-
-  <div class="cards">
-    <div class="card pro">
-      <h3>Pro</h3>
-      <span>€2.99 / month</span>
-      <p>
-        🔒 License validation<br>
-        🔒 Tamper detection (server-side)<br>
-        🔒 Anti-cloning checks<br>
-        🔒 Stronger monitoring & alerts<br>
-        🔒 Priority updates
-      </p>
-    </div>
-  </div>
-
-  <p>
-    Pro Protection does not claim to be unbreakable. It significantly increases
-    the difficulty of attacks and helps detect abuse faster.
-  </p>
-
-  <button>Contact Us</button>
-</section>
-
-<footer>
-  © 2025 Save Protection — Security through transparency
-</footer>
 
 <script>
+function showSection(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
 /* Snow animation */
 const canvas = document.getElementById("snow");
 const ctx = canvas.getContext("2d");
@@ -253,59 +161,46 @@ const ctx = canvas.getContext("2d");
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-let flakes = [];
-for (let i = 0; i < 300; i++) {
-  flakes.push({
+let snowflakes = [];
+
+for (let i = 0; i < 200; i++) {
+  snowflakes.push({
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
-    r: Math.random() * 4 + 1,
+    r: Math.random() * 3 + 1,
     d: Math.random() + 1
   });
 }
 
 function drawSnow() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.fillStyle = "white";
   ctx.beginPath();
-  flakes.forEach(f => {
+  for (let i = 0; i < snowflakes.length; i++) {
+    let f = snowflakes[i];
     ctx.moveTo(f.x, f.y);
-    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2);
-    f.y += f.d;
-    if (f.y > canvas.height) {
-      f.y = 0;
-      f.x = Math.random() * canvas.width;
-    }
-  });
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+  }
   ctx.fill();
+  moveSnow();
+}
+
+function moveSnow() {
+  for (let i = 0; i < snowflakes.length; i++) {
+    let f = snowflakes[i];
+    f.y += Math.pow(f.d, 2);
+    if (f.y > canvas.height) {
+      snowflakes[i] = {
+        x: Math.random() * canvas.width,
+        y: 0,
+        r: f.r,
+        d: f.d
+      };
+    }
+  }
 }
 
 setInterval(drawSnow, 33);
-
-window.onresize = () => {
-  canvas.width = window.innerWidth;
-  canvas.height = window.innerHeight;
-};
-
-/* Free protection logic */
-function activateProtection() {
-  const name = document.getElementById("projectName").value;
-
-  if (!name) {
-    alert("Please enter a project name.");
-    return;
-  }
-
-  document.getElementById("status").innerHTML =
-    "✅ Free Protection Active<br>" +
-    "Project: " + name + "<br>" +
-    "Level: Basic<br>" +
-    "Status: Monitoring enabled";
-}
-
-/* Smooth scroll */
-function scrollToSection(id) {
-  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-}
 </script>
 
 </body>
