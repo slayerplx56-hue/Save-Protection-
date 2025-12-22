@@ -1,74 +1,70 @@
 const express = require("express");
 const crypto = require("crypto");
-
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
+const SECRET = "change-this-secret";
 
-/* PRO LICENSE DATABASE */
+/* LICENSE STORE */
 const licenses = {
-  "PRO-9999-XXXX": {
+  "PRO-25-AAAA": {
     project: "MyGame",
-    expires: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
-    device: null,        // bound on first use
-    failedAttempts: 0,
+    expires: Date.now() + 30 * 24 * 60 * 60 * 1000,
+    device: null,
+    fails: 0,
     blocked: false
   }
 };
 
-/* RATE LIMIT MEMORY */
-const requests = {};
+/* RATE LIMIT (IP) */
+const rate = {};
 
-/* VALIDATION ENDPOINT */
 app.post("/validate", (req, res) => {
-  const { license, project, deviceId } = req.body;
   const ip = req.ip;
+  rate[ip] = (rate[ip] || 0) + 1;
+  if (rate[ip] > 15)
+    return res.json({ valid: false, reason: "Rate limited" });
 
-  /* Rate limit (basic attack protection) */
-  requests[ip] = (requests[ip] || 0) + 1;
-  if (requests[ip] > 20) {
-    return res.json({ valid: false, reason: "Too many requests" });
-  }
-
+  const { license, project, deviceId, timestamp, signature } = req.body;
   const data = licenses[license];
 
-  if (!data) {
-    return res.json({ valid: false, reason: "Invalid license" });
-  }
+  if (!data || data.blocked)
+    return res.json({ valid: false, reason: "Blocked / invalid" });
 
-  if (data.blocked) {
-    return res.json({ valid: false, reason: "License blocked" });
-  }
+  if (Date.now() > data.expires)
+    return res.json({ valid: false, reason: "Expired" });
 
-  if (data.project !== project) {
-    data.failedAttempts++;
-    if (data.failedAttempts >= 5) data.blocked = true;
-    return res.json({ valid: false, reason: "Project mismatch" });
-  }
+  /* Replay protection (30s window) */
+  if (Math.abs(Date.now() - timestamp) > 30000)
+    return res.json({ valid: false, reason: "Replay blocked" });
 
-  if (Date.now() > data.expires) {
-    return res.json({ valid: false, reason: "License expired" });
+  /* Signature check */
+  const check = crypto
+    .createHmac("sha256", SECRET)
+    .update(license + timestamp)
+    .digest("hex");
+
+  if (check !== signature) {
+    data.fails++;
+    if (data.fails >= 5) data.blocked = true;
+    return res.json({ valid: false, reason: "Bad signature" });
   }
 
   /* Device binding */
-  if (!data.device) {
-    data.device = deviceId; // first device locks it
-  } else if (data.device !== deviceId) {
-    data.failedAttempts++;
-    if (data.failedAttempts >= 5) data.blocked = true;
+  if (!data.device) data.device = deviceId;
+  if (data.device !== deviceId)
     return res.json({ valid: false, reason: "Device mismatch" });
-  }
 
-  data.failedAttempts = 0;
+  data.fails = 0;
 
   return res.json({
     valid: true,
     level: "PRO",
-    message: "Pro protection active"
+    message: "Pro 25% protection active"
   });
 });
 
-app.listen(PORT, () => {
-  console.log("Pro Protection server running on port " + PORT);
-});
+app.listen(PORT, () =>
+  console.log("Pro 25% protection running")
+);
