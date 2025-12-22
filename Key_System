@@ -1,0 +1,81 @@
+const express = require("express");
+const app = express();
+app.use(express.json());
+
+const PORT = 3000;
+
+/* ===== KEY DATABASE (YOU EDIT THIS) ===== */
+const validKeys = {
+  "25_29381_79833_0": { used: false },
+  "14_88221_10493_2": { used: false }
+};
+
+/* ===== BASIC PROTECTION STATE ===== */
+const rate = {};
+const blocked = {};
+const lastReq = {};
+
+/* ===== SETTINGS ===== */
+const MAX_REQ_PER_MIN = 20;
+const COOLDOWN_MS = 800;
+
+/* ===== HELPERS ===== */
+const now = () => Date.now();
+
+function rateLimit(ip) {
+  rate[ip] = rate[ip] || [];
+  rate[ip] = rate[ip].filter(t => now() - t < 60000);
+  rate[ip].push(now());
+  return rate[ip].length > MAX_REQ_PER_MIN;
+}
+
+/* ===== VALIDATION ENDPOINT ===== */
+app.post("/validate", (req, res) => {
+  const ip = req.ip;
+  const { license, project, timestamp } = req.body;
+
+  if (blocked[ip]) {
+    return res.json({ valid: false, reason: "Blocked" });
+  }
+
+  if (lastReq[ip] && now() - lastReq[ip] < COOLDOWN_MS) {
+    blocked[ip] = true;
+    return res.json({ valid: false, reason: "Spam detected" });
+  }
+  lastReq[ip] = now();
+
+  if (rateLimit(ip)) {
+    blocked[ip] = true;
+    return res.json({ valid: false, reason: "Too many requests" });
+  }
+
+  if (!validKeys[license]) {
+    return res.json({ valid: false, reason: "Invalid key" });
+  }
+
+  if (validKeys[license].used) {
+    return res.json({ valid: false, reason: "Key already used" });
+  }
+
+  if (project !== "MyGame") {
+    return res.json({ valid: false, reason: "Project mismatch" });
+  }
+
+  if (Math.abs(now() - timestamp) > 60000) {
+    return res.json({ valid: false, reason: "Replay blocked" });
+  }
+
+  /* LOCK KEY */
+  validKeys[license].used = true;
+
+  return res.json({
+    valid: true,
+    level: "FREE",
+    message: "36% free protection active"
+  });
+});
+
+/* ===== START SERVER ===== */
+app.listen(PORT, () => {
+  console.log("Free 36% protection server running on port " + PORT);
+});
