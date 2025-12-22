@@ -19,6 +19,10 @@
       font-size: 42px;
     }
 
+    h2, h3 {
+      margin-top: 30px;
+    }
+
     .btn {
       background: #555;
       color: white;
@@ -36,6 +40,14 @@
       padding: 20px;
     }
 
+    .info-box {
+      max-width: 900px;
+      margin: auto;
+      font-size: 18px;
+      line-height: 1.6;
+      text-align: left;
+    }
+
     input, textarea {
       width: 80%;
       padding: 12px;
@@ -44,25 +56,25 @@
       border: none;
     }
 
-    .info-box {
-      max-width: 800px;
-      margin: auto;
-      font-size: 18px;
-      line-height: 1.6;
-    }
-
-    /* simple snow */
+    /* Snow effect */
     .snow {
       position: fixed;
       top: -10px;
       color: white;
       animation: fall linear infinite;
+      pointer-events: none;
     }
 
     @keyframes fall {
       to {
         transform: translateY(110vh);
       }
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 14px;
+      opacity: 0.7;
     }
   </style>
 </head>
@@ -73,24 +85,50 @@
 <button class="btn" onclick="showSection('info')">Information</button>
 <button class="btn" onclick="showSection('contact')">Contact Us</button>
 
+<!-- INFORMATION -->
 <div id="info" class="section">
   <div class="info-box">
     <h2>Information</h2>
+
     <p>
-      We provide a <b>FREE basic protection system</b>.<br><br>
-      What it does:
-      <ul>
-        <li>License / key verification</li>
-        <li>Basic abuse prevention</li>
-        <li>Stops simple misuse</li>
-        <li>Project validation</li>
-      </ul>
-      This is <b>NOT military or enterprise security</b>.<br>
-      It helps against <b>small & basic attacks</b>.
+      Our protection system is designed to help reduce
+      <b>basic abuse, misuse, and small automated attacks</b>
+      for games, websites, and small projects.
+    </p>
+
+    <h3>What this protection DOES</h3>
+    <ul>
+      <li>Validates license / key access</li>
+      <li>Blocks fake or reused keys</li>
+      <li>Reduces spam and automated requests</li>
+      <li>Limits basic abuse attempts</li>
+      <li>Supports key expiration</li>
+    </ul>
+
+    <h3>What this protection DOES NOT do</h3>
+    <ul>
+      <li>Does not stop professional or advanced hackers</li>
+      <li>Does not protect against large DDoS attacks</li>
+      <li>Does not guarantee full security</li>
+    </ul>
+
+    <p>
+      <b>Important:</b><br>
+      No protection system is 100% secure.
+      This service provides <b>basic-level protection</b>
+      and should be used as an extra safety layer,
+      not as a complete security solution.
+    </p>
+
+    <p>
+      By using this service, you accept its limits
+      and understand that it reduces risks but does not
+      remove them completely.
     </p>
   </div>
 </div>
 
+<!-- CONTACT -->
 <div id="contact" class="section">
   <h2>Contact Us</h2>
 
@@ -105,6 +143,10 @@
 
   <p id="finalMsg"></p>
 </div>
+
+<footer>
+  © Save Protection — Basic protection service
+</footer>
 
 <script>
   function showSection(id) {
@@ -124,7 +166,7 @@
     const email = document.getElementById("email").value;
 
     if (!reason || !email) {
-      alert("Fill everything");
+      alert("Please fill everything");
       return;
     }
 
@@ -132,9 +174,10 @@
 
     const subject = "Protection Request";
     const body =
-`New protection request:
+`New protection request
 
-User Email: ${email}
+User Email:
+${email}
 
 Reason:
 ${reason}
@@ -148,11 +191,11 @@ ${key}
       `mailto:slayerplx56@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 
     document.getElementById("finalMsg").innerText =
-      "Check your email every hour. It may arrive within 24h.";
+      "Check your email every hour. It may come up to 24h.";
   }
 
-  // snow effect
-  for (let i = 0; i < 40; i++) {
+  /* Snow generation */
+  for (let i = 0; i < 50; i++) {
     const snow = document.createElement("div");
     snow.className = "snow";
     snow.innerText = "❄";
