@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Save Protection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: radial-gradient(circle at top, #0a2a43, #000814);
+  color: white;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Snow canvas */
+canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -1;
+}
+
+/* Header */
+header {
+  text-align: center;
+  padding: 80px 20px;
+}
+
+header h1 {
+  font-size: 3.5rem;
+  margin-bottom: 15px;
+}
+
+header p {
+  font-size: 1.2rem;
+  opacity: 0.9;
+}
+
+/* Buttons */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-top: 50px;
+  flex-wrap: wrap;
+}
+
+button {
+  padding: 18px 40px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #b0b0b0;
+  color: black;
+  transition: transform 0.3s, background 0.3s;
+}
+
+button:hover {
+  transform: scale(1.1);
+  background: #ffffff;
+}
+
+/* Sections */
+section {
+  max-width: 900px;
+  margin: 120px auto;
+  padding: 60px 30px;
+  background: rgba(0,0,0,0.6);
+  border-radius: 20px;
+  text-align: center;
+}
+
+section h2 {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+}
+
+section p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+
+/* Cards */
+.cards {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 40px;
+}
+
+.card {
+  background: rgba(255,255,255,0.1);
+  padding: 30px;
+  border-radius: 15px;
+  width: 280px;
+}
+
+.card h3 {
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+}
+
+.card span {
+  font-size: 1.3rem;
+  display: block;
+  margin-bottom: 15px;
+}
+
+/* Contact button */
+.contact {
+  margin-top: 40px;
+}
+
+.contact a {
+  padding: 15px 35px;
+  background: white;
+  color: black;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.contact a:hover {
+  background: #e0e0e0;
+}
+
+/* Footer */
+footer {
+  text-align: center;
+  padding: 40px;
+  opacity: 0.7;
+}
+</style>
+</head>
+
+<body>
+
+<canvas id="snow"></canvas>
+
+<header>
+  <h1>Welcome to Save Protection</h1>
+  <p>Advanced protection for games & websites</p>
+
+  <div class="buttons">
+    <button onclick="scrollToSection('info')">Information</button>
+    <button onclick="scrollToSection('protect')">Get Protection</button>
+  </div>
+</header>
+
+<section id="info">
+  <h2>What We Do</h2>
+  <p>
+    Save Protection secures your game or website from hacking, piracy,
+    reverse engineering, model cloning, and malicious attacks.
+  </p>
+  <p>
+    We use advanced detection systems, behavioral analysis, and prediction
+    logic to stop threats before damage happens.
+  </p>
+
+  <div class="cards">
+    <div class="card">
+      <h3>Free Protection</h3>
+      <span>€0 / forever</span>
+      <p>
+        ✔ Basic security<br>
+        ✔ Anti-cheat detection<br>
+        ✔ Copyright alerts<br>
+        ✔ Entry-level defense
+      </p>
+    </div>
+
+    <div class="card">
+      <h3>Pro Protection</h3>
+      <span>€2.99 / month</span>
+      <p>
+        🔥 Stronger encryption<br>
+        🔥 Hack prediction AI<br>
+        🔥 Anti-model cloning<br>
+        🔥 Priority updates
+      </p>
+    </div>
+  </div>
+</section>
+
+<section id="protect">
+  <h2>Get Protected</h2>
+  <p>
+    Choose your protection level and secure your project today.
+    Pro protection includes predictive systems and stronger shields.
+  </p>
+
+  <div class="contact">
+    <a href="#">Contact Us</a>
+  </div>
+</section>
+
+<footer>
+  © 2025 Save Protection. All rights reserved.
+</footer>
+
+<script>
+const canvas = document.getElementById("snow");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let snowflakes = [];
+
+for (let i = 0; i < 300; i++) {
+  snowflakes.push({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 4 + 1,
+    d: Math.random() + 1
+  });
+}
+
+function drawSnow() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "rgba(255,255,255,0.9)";
+  ctx.beginPath();
+  for (let i = 0; i < snowflakes.length; i++) {
+    let f = snowflakes[i];
+    ctx.moveTo(f.x, f.y);
+    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+  }
+  ctx.fill();
+  moveSnow();
+}
+
+let angle = 0;
+
+function moveSnow() {
+  angle += 0.01;
+  for (let i = 0; i < snowflakes.length; i++) {
+    let f = snowflakes[i];
+    f.y += Math.pow(f.d, 2) + 0.5;
+    f.x += Math.sin(angle) * 0.5;
+
+    if (f.y > canvas.height) {
+      snowflakes[i] = {
+        x: Math.random() * canvas.width,
+        y: 0,
+        r: f.r,
+        d: f.d
+      };
+    }
+  }
+}
+
+setInterval(drawSnow, 33);
+
+window.onresize = () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+};
+
+function scrollToSection(id) {
+  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
+}
+</script>
+
+</body>
+</html>
