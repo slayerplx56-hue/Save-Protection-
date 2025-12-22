@@ -1,42 +1,41 @@
 const express = require("express");
 const app = express();
-
 app.use(express.json());
 
 const PORT = 3000;
 
-/* FREE LICENSE DATABASE */
+/* FREE LICENSES */
 const licenses = {
-  "FREE-1111-AAAA": {
-    project: "MyGame"
-  }
+  "FREE-1111-AAAA": { project: "MyGame" }
 };
 
-/* VALIDATION ENDPOINT */
+/* BASIC RATE LIMIT */
+const attempts = {};
+
 app.post("/validate", (req, res) => {
+  const ip = req.ip;
   const { license, project } = req.body;
 
+  attempts[ip] = (attempts[ip] || 0) + 1;
+  if (attempts[ip] > 10) {
+    return res.json({ valid: false, reason: "Too many requests" });
+  }
+
   if (!licenses[license]) {
-    return res.json({
-      valid: false,
-      reason: "Invalid license"
-    });
+    return res.json({ valid: false, reason: "Invalid license" });
   }
 
   if (licenses[license].project !== project) {
-    return res.json({
-      valid: false,
-      reason: "Project mismatch"
-    });
+    return res.json({ valid: false, reason: "Project mismatch" });
   }
 
   return res.json({
     valid: true,
+    level: "FREE",
     message: "Free protection active"
   });
 });
 
-/* SERVER START */
-app.listen(PORT, () => {
-  console.log("Free Protection server running on port " + PORT);
-});
+app.listen(PORT, () =>
+  console.log("Free protection running")
+);
