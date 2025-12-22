@@ -1,0 +1,74 @@
+const express = require("express");
+const crypto = require("crypto");
+
+const app = express();
+app.use(express.json());
+
+const PORT = 3000;
+
+/* PRO LICENSE DATABASE */
+const licenses = {
+  "PRO-9999-XXXX": {
+    project: "MyGame",
+    expires: Date.now() + 30 * 24 * 60 * 60 * 1000, // 30 days
+    device: null,        // bound on first use
+    failedAttempts: 0,
+    blocked: false
+  }
+};
+
+/* RATE LIMIT MEMORY */
+const requests = {};
+
+/* VALIDATION ENDPOINT */
+app.post("/validate", (req, res) => {
+  const { license, project, deviceId } = req.body;
+  const ip = req.ip;
+
+  /* Rate limit (basic attack protection) */
+  requests[ip] = (requests[ip] || 0) + 1;
+  if (requests[ip] > 20) {
+    return res.json({ valid: false, reason: "Too many requests" });
+  }
+
+  const data = licenses[license];
+
+  if (!data) {
+    return res.json({ valid: false, reason: "Invalid license" });
+  }
+
+  if (data.blocked) {
+    return res.json({ valid: false, reason: "License blocked" });
+  }
+
+  if (data.project !== project) {
+    data.failedAttempts++;
+    if (data.failedAttempts >= 5) data.blocked = true;
+    return res.json({ valid: false, reason: "Project mismatch" });
+  }
+
+  if (Date.now() > data.expires) {
+    return res.json({ valid: false, reason: "License expired" });
+  }
+
+  /* Device binding */
+  if (!data.device) {
+    data.device = deviceId; // first device locks it
+  } else if (data.device !== deviceId) {
+    data.failedAttempts++;
+    if (data.failedAttempts >= 5) data.blocked = true;
+    return res.json({ valid: false, reason: "Device mismatch" });
+  }
+
+  data.failedAttempts = 0;
+
+  return res.json({
+    valid: true,
+    level: "PRO",
+    message: "Pro protection active"
+  });
+});
+
+app.listen(PORT, () => {
+  console.log("Pro Protection server running on port " + PORT);
+});
