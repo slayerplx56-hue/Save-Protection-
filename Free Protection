@@ -1,55 +1,75 @@
 const express = require("express");
+const crypto = require("crypto");
 const app = express();
 app.use(express.json());
 
 const PORT = 3000;
 
-/* FREE LICENSE (shared) */
-const FREE_KEY = "FREE-20-ACCESS";
+/* SHARED FREE KEY */
+const FREE_KEY = "FREE-36-ACCESS";
 
-/* BASIC STATE */
+/* STATE */
 const rate = {};
-const blockedIPs = {};
+const blocked = {};
+const lastRequest = {};
+
+/* SETTINGS */
+const MAX_REQ_PER_MIN = 20;
+const COOLDOWN_MS = 800;
 
 /* HELPERS */
-function rateLimited(ip) {
-  rate[ip] = (rate[ip] || 0) + 1;
-  return rate[ip] > 15; // per minute (simple)
+function now() { return Date.now(); }
+
+function rateLimit(ip) {
+  rate[ip] = rate[ip] || [];
+  rate[ip] = rate[ip].filter(t => now() - t < 60000);
+  rate[ip].push(now());
+  return rate[ip].length > MAX_REQ_PER_MIN;
 }
 
 app.post("/validate", (req, res) => {
   const ip = req.ip;
   const { license, project, timestamp } = req.body;
 
-  if (blockedIPs[ip]) {
-    return res.json({ valid: false, reason: "IP blocked" });
+  if (blocked[ip]) {
+    return res.json({ valid: false, reason: "Blocked" });
   }
 
-  if (rateLimited(ip)) {
-    blockedIPs[ip] = true; // auto-block spam
+  /* Cooldown */
+  if (lastRequest[ip] && now() - lastRequest[ip] < COOLDOWN_MS) {
+    blocked[ip] = true;
+    return res.json({ valid: false, reason: "Spam detected" });
+  }
+  lastRequest[ip] = now();
+
+  /* Rate limit */
+  if (rateLimit(ip)) {
+    blocked[ip] = true;
     return res.json({ valid: false, reason: "Too many requests" });
   }
 
+  /* Key check */
   if (license !== FREE_KEY) {
     return res.json({ valid: false, reason: "Invalid key" });
   }
 
+  /* Project check */
   if (project !== "MyGame") {
     return res.json({ valid: false, reason: "Project mismatch" });
   }
 
-  // basic replay protection (60s)
-  if (Math.abs(Date.now() - timestamp) > 60000) {
+  /* Replay protection (60s window) */
+  if (Math.abs(now() - timestamp) > 60000) {
     return res.json({ valid: false, reason: "Replay blocked" });
   }
 
   return res.json({
     valid: true,
     level: "FREE",
-    message: "Free 20% protection active"
+    message: "Free protection active"
   });
 });
 
 app.listen(PORT, () =>
-  console.log("Free 20% protection running")
+  console.log("Free 36% protection running")
 );
