@@ -1,206 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Save Protection</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Save Protection</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: radial-gradient(circle at top, #1e3c72, #020111);
+      color: white;
+      text-align: center;
+      overflow-x: hidden;
+    }
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-}
+    h1 {
+      color: lightblue;
+      margin-top: 40px;
+      font-size: 42px;
+    }
 
-body {
-  background: linear-gradient(to bottom, #0b1d3a, #020b18);
-  color: white;
-  overflow-x: hidden;
-}
+    .btn {
+      background: #555;
+      color: white;
+      padding: 15px 30px;
+      margin: 15px;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
 
-/* Snow */
-canvas {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: -1;
-}
+    .section {
+      display: none;
+      margin-top: 40px;
+      padding: 20px;
+    }
 
-/* Navigation */
-nav {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  padding: 30px;
-}
+    input, textarea {
+      width: 80%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 6px;
+      border: none;
+    }
 
-nav button {
-  background: none;
-  border: 2px solid #ccc;
-  color: #ccc;
-  font-size: 24px;
-  padding: 15px 40px;
-  border-radius: 40px;
-  cursor: pointer;
-  transition: 0.3s;
-}
+    .info-box {
+      max-width: 800px;
+      margin: auto;
+      font-size: 18px;
+      line-height: 1.6;
+    }
 
-nav button:hover {
-  background: #ccc;
-  color: black;
-}
+    /* simple snow */
+    .snow {
+      position: fixed;
+      top: -10px;
+      color: white;
+      animation: fall linear infinite;
+    }
 
-/* Sections */
-section {
-  display: none;
-  padding: 80px 20px;
-  text-align: center;
-}
-
-section.active {
-  display: block;
-}
-
-h1 {
-  font-size: 48px;
-  margin-bottom: 30px;
-  color: lightblue;
-}
-
-h2 {
-  font-size: 36px;
-  margin-top: 40px;
-}
-
-p {
-  max-width: 800px;
-  margin: 20px auto;
-  font-size: 18px;
-  line-height: 1.6;
-}
-
-/* Contact button */
-.contact {
-  margin-top: 40px;
-}
-
-.contact a {
-  background: white;
-  color: black;
-  padding: 15px 35px;
-  border-radius: 30px;
-  text-decoration: none;
-  font-size: 20px;
-  transition: 0.3s;
-}
-
-.contact a:hover {
-  background: lightblue;
-}
-</style>
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+  </style>
 </head>
-
 <body>
 
-<canvas id="snow"></canvas>
+<h1>Welcome to our Protection Website</h1>
 
-<nav>
-  <button onclick="showSection('home')">Home</button>
-  <button onclick="showSection('info')">Information</button>
-</nav>
+<button class="btn" onclick="showSection('info')">Information</button>
+<button class="btn" onclick="showSection('contact')">Contact Us</button>
 
-<section id="home" class="active">
-  <h1>Welcome to our Protection Website</h1>
-  <p>
-    We help protect your game or website from basic attacks, abuse,
-    and unauthorized usage.
-  </p>
-</section>
-
-<section id="info">
-  <h1>Information</h1>
-
-  <h2>What does our protection do?</h2>
-  <p>
-    Our free protection system helps reduce small attacks,
-    basic hacking attempts, fake requests, and misuse.
-    It verifies access and adds a simple security layer.
-  </p>
-
-  <h2>What it can protect</h2>
-  <p>
-    • Basic API abuse<br>
-    • Fake users<br>
-    • Simple exploits<br>
-    • Unauthorized access attempts
-  </p>
-
-  <h2>Important to know</h2>
-  <p>
-    This is a basic protection layer.
-    No system can stop everything,
-    but this helps improve safety.
-  </p>
-
-  <div class="contact">
-    <a href="mailto:your@email.com">Contact Us</a>
+<div id="info" class="section">
+  <div class="info-box">
+    <h2>Information</h2>
+    <p>
+      We provide a <b>FREE basic protection system</b>.<br><br>
+      What it does:
+      <ul>
+        <li>License / key verification</li>
+        <li>Basic abuse prevention</li>
+        <li>Stops simple misuse</li>
+        <li>Project validation</li>
+      </ul>
+      This is <b>NOT military or enterprise security</b>.<br>
+      It helps against <b>small & basic attacks</b>.
+    </p>
   </div>
-</section>
+</div>
+
+<div id="contact" class="section">
+  <h2>Contact Us</h2>
+
+  <p>Why do you need protection?</p>
+  <textarea id="reason" rows="4" placeholder="Write your reason..."></textarea>
+
+  <p>Your email:</p>
+  <input type="email" id="email" placeholder="your@email.com">
+
+  <br>
+  <button class="btn" onclick="submitRequest()">Submit</button>
+
+  <p id="finalMsg"></p>
+</div>
 
 <script>
-function showSection(id) {
-  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
-
-/* Snow animation */
-const canvas = document.getElementById("snow");
-const ctx = canvas.getContext("2d");
-
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let snowflakes = [];
-
-for (let i = 0; i < 200; i++) {
-  snowflakes.push({
-    x: Math.random() * canvas.width,
-    y: Math.random() * canvas.height,
-    r: Math.random() * 3 + 1,
-    d: Math.random() + 1
-  });
-}
-
-function drawSnow() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
-  ctx.beginPath();
-  for (let i = 0; i < snowflakes.length; i++) {
-    let f = snowflakes[i];
-    ctx.moveTo(f.x, f.y);
-    ctx.arc(f.x, f.y, f.r, 0, Math.PI * 2, true);
+  function showSection(id) {
+    document.querySelectorAll('.section').forEach(s => s.style.display = "none");
+    document.getElementById(id).style.display = "block";
   }
-  ctx.fill();
-  moveSnow();
-}
 
-function moveSnow() {
-  for (let i = 0; i < snowflakes.length; i++) {
-    let f = snowflakes[i];
-    f.y += Math.pow(f.d, 2);
-    if (f.y > canvas.height) {
-      snowflakes[i] = {
-        x: Math.random() * canvas.width,
-        y: 0,
-        r: f.r,
-        d: f.d
-      };
+  function generateKey() {
+    return Math.floor(Math.random() * 99) + "_" +
+           Math.floor(Math.random() * 99999) + "_" +
+           Math.floor(Math.random() * 99999) + "_" +
+           Math.floor(Math.random() * 9);
+  }
+
+  function submitRequest() {
+    const reason = document.getElementById("reason").value;
+    const email = document.getElementById("email").value;
+
+    if (!reason || !email) {
+      alert("Fill everything");
+      return;
     }
-  }
-}
 
-setInterval(drawSnow, 33);
+    const key = generateKey();
+
+    const subject = "Protection Request";
+    const body =
+`New protection request:
+
+User Email: ${email}
+
+Reason:
+${reason}
+
+Generated Code:
+${key}
+
+(Reply manually with the key)`;
+
+    window.location.href =
+      `mailto:slayerplx56@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+    document.getElementById("finalMsg").innerText =
+      "Check your email every hour. It may arrive within 24h.";
+  }
+
+  // snow effect
+  for (let i = 0; i < 40; i++) {
+    const snow = document.createElement("div");
+    snow.className = "snow";
+    snow.innerText = "❄";
+    snow.style.left = Math.random() * 100 + "vw";
+    snow.style.animationDuration = (5 + Math.random() * 10) + "s";
+    snow.style.fontSize = (10 + Math.random() * 20) + "px";
+    document.body.appendChild(snow);
+  }
 </script>
 
 </body>
