@@ -1,1 +1,42 @@
+const express = require("express");
+const app = express();
 
+app.use(express.json());
+
+const PORT = 3000;
+
+/* FREE LICENSE DATABASE */
+const licenses = {
+  "FREE-1111-AAAA": {
+    project: "MyGame"
+  }
+};
+
+/* VALIDATION ENDPOINT */
+app.post("/validate", (req, res) => {
+  const { license, project } = req.body;
+
+  if (!licenses[license]) {
+    return res.json({
+      valid: false,
+      reason: "Invalid license"
+    });
+  }
+
+  if (licenses[license].project !== project) {
+    return res.json({
+      valid: false,
+      reason: "Project mismatch"
+    });
+  }
+
+  return res.json({
+    valid: true,
+    message: "Free protection active"
+  });
+});
+
+/* SERVER START */
+app.listen(PORT, () => {
+  console.log("Free Protection server running on port " + PORT);
+});
