@@ -1,4 +1,11 @@
 {
-  "TEST-KEY-123": true,
-  "ABC-DEF-456": true
+  "name": "key-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
