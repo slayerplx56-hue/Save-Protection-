@@ -1,209 +1,242 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Save Protection</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: radial-gradient(circle at top, #1e3c72, #020111);
-      color: white;
-      text-align: center;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8">
+<title>Save Protection</title>
 
-    h1 {
-      color: lightblue;
-      margin-top: 40px;
-      font-size: 42px;
-    }
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: radial-gradient(circle at top, #0a1a2f, #000);
+  color: white;
+  overflow-x: hidden;
+}
 
-    h2, h3 {
-      margin-top: 30px;
-    }
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  background: rgba(0,0,0,0.85);
+  padding: 15px;
+  text-align: center;
+  z-index: 10;
+}
 
-    .btn {
-      background: #555;
-      color: white;
-      padding: 15px 30px;
-      margin: 15px;
-      border: none;
-      font-size: 20px;
-      cursor: pointer;
-      border-radius: 8px;
-    }
+nav button {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 0 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
 
-    .section {
-      display: none;
-      margin-top: 40px;
-      padding: 20px;
-    }
+section {
+  min-height: 100vh;
+  padding: 120px 20px 60px;
+  display: none;
+  text-align: center;
+}
 
-    .info-box {
-      max-width: 900px;
-      margin: auto;
-      font-size: 18px;
-      line-height: 1.6;
-      text-align: left;
-    }
+section.active {
+  display: block;
+}
 
-    input, textarea {
-      width: 80%;
-      padding: 12px;
-      margin: 10px 0;
-      border-radius: 6px;
-      border: none;
-    }
+h1 {
+  font-size: 42px;
+  color: lightblue;
+}
 
-    /* Snow effect */
-    .snow {
-      position: fixed;
-      top: -10px;
-      color: white;
-      animation: fall linear infinite;
-      pointer-events: none;
-    }
+.info-box {
+  max-width: 850px;
+  margin: auto;
+  background: rgba(0,0,0,0.6);
+  padding: 30px;
+  border-radius: 12px;
+  text-align: left;
+  line-height: 1.6;
+}
 
-    @keyframes fall {
-      to {
-        transform: translateY(110vh);
-      }
-    }
+.contact-box {
+  max-width: 350px;
+  margin: auto;
+  background: #111;
+  padding: 25px;
+  border-radius: 12px;
+}
 
-    footer {
-      margin-top: 60px;
-      font-size: 14px;
-      opacity: 0.7;
-    }
-  </style>
+input, textarea, button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+textarea {
+  resize: none;
+  height: 90px;
+}
+
+button.submit {
+  background: lightgreen;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#msg {
+  margin-top: 15px;
+  color: lightgreen;
+  font-size: 14px;
+}
+
+.snow {
+  position: fixed;
+  top: -10px;
+  width: 6px;
+  height: 6px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to { transform: translateY(110vh); }
+}
+</style>
 </head>
+
 <body>
 
-<h1>Welcome to our Protection Website</h1>
+<nav>
+  <button onclick="showSection('home')">Home</button>
+  <button onclick="showSection('info')">Information</button>
+  <button onclick="showSection('contact')">Contact Us</button>
+</nav>
 
-<button class="btn" onclick="showSection('info')">Information</button>
-<button class="btn" onclick="showSection('contact')">Contact Us</button>
+<section id="home" class="active">
+  <h1>Welcome to Save Protection</h1>
+  <p style="color:#aaa;">Basic protection concept for small projects</p>
+</section>
 
-<!-- INFORMATION -->
-<div id="info" class="section">
+<section id="info">
   <div class="info-box">
-    <h2>Information</h2>
+    <h2 style="color:lightblue;">Information</h2>
 
     <p>
-      Our protection system is designed to help reduce
-      <b>basic abuse, misuse, and small automated attacks</b>
-      for games, websites, and small projects.
+      Save Protection is a <b>basic protection system</b>.
+      It helps reduce small abuse, misuse, and unauthorized use.
     </p>
 
-    <h3>What this protection DOES</h3>
+    <h3>What it CAN do</h3>
     <ul>
-      <li>Validates license / key access</li>
-      <li>Blocks fake or reused keys</li>
-      <li>Reduces spam and automated requests</li>
-      <li>Limits basic abuse attempts</li>
-      <li>Supports key expiration</li>
+      <li>✔ Key / license validation</li>
+      <li>✔ Manual approval system</li>
+      <li>✔ Reduce small automated abuse</li>
+      <li>✔ Track requests (email + IP)</li>
     </ul>
 
-    <h3>What this protection DOES NOT do</h3>
+    <h3>What it CANNOT do</h3>
     <ul>
-      <li>Does not stop professional or advanced hackers</li>
-      <li>Does not protect against large DDoS attacks</li>
-      <li>Does not guarantee full security</li>
+      <li>✖ Stop professional hackers</li>
+      <li>✖ Stop strong DDoS attacks</li>
+      <li>✖ Guarantee full security</li>
     </ul>
 
     <p>
-      <b>Important:</b><br>
-      No protection system is 100% secure.
-      This service provides <b>basic-level protection</b>
-      and should be used as an extra safety layer,
-      not as a complete security solution.
-    </p>
-
-    <p>
-      By using this service, you accept its limits
-      and understand that it reduces risks but does not
-      remove them completely.
+      ⚠ This protection is <b>NOT 100%</b>.  
+      It is meant as an extra safety layer only.
     </p>
   </div>
-</div>
+</section>
 
-<!-- CONTACT -->
-<div id="contact" class="section">
-  <h2>Contact Us</h2>
+<section id="contact">
+  <div class="contact-box">
+    <h2 style="color:lightblue;">Contact Us</h2>
 
-  <p>Why do you need protection?</p>
-  <textarea id="reason" rows="4" placeholder="Write your reason..."></textarea>
+    <p style="font-size:13px;color:#aaa;">
+      Requests are reviewed manually.<br>
+      Emails go to:<br>
+      <b>slayerplx56@gmail.com</b>
+    </p>
 
-  <p>Your email:</p>
-  <input type="email" id="email" placeholder="your@email.com">
+    <form id="contactForm">
+      <input type="email" id="email" placeholder="Your email" required>
+      <textarea id="reason" placeholder="Why do you need protection?" required></textarea>
+      <button class="submit" type="submit">Submit</button>
+    </form>
 
-  <br>
-  <button class="btn" onclick="submitRequest()">Submit</button>
+    <p id="msg"></p>
+  </div>
+</section>
 
-  <p id="finalMsg"></p>
-</div>
-
-<footer>
-  © Save Protection — Basic protection service
-</footer>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 
 <script>
-  function showSection(id) {
-    document.querySelectorAll('.section').forEach(s => s.style.display = "none");
-    document.getElementById(id).style.display = "block";
+// SECTION SWITCH
+function showSection(id) {
+  document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+// SNOW
+for (let i = 0; i < 90; i++) {
+  let snow = document.createElement("div");
+  snow.className = "snow";
+  snow.style.left = Math.random() * 100 + "vw";
+  snow.style.animationDuration = 3 + Math.random() * 6 + "s";
+  document.body.appendChild(snow);
+}
+
+// GET USER IP
+async function getUserIP() {
+  try {
+    const res = await fetch("https://api.ipify.org?format=json");
+    const data = await res.json();
+    return data.ip;
+  } catch {
+    return "Unknown";
   }
+}
 
-  function generateKey() {
-    return Math.floor(Math.random() * 99) + "_" +
-           Math.floor(Math.random() * 99999) + "_" +
-           Math.floor(Math.random() * 99999) + "_" +
-           Math.floor(Math.random() * 9);
-  }
+// EMAILJS INIT
+(function(){
+  emailjs.init("YOUR_PUBLIC_KEY"); // 🔴 PUT YOUR KEY
+})();
 
-  function submitRequest() {
-    const reason = document.getElementById("reason").value;
-    const email = document.getElementById("email").value;
+// FORM SUBMIT
+document.getElementById("contactForm").addEventListener("submit", async function(e){
+  e.preventDefault();
 
-    if (!reason || !email) {
-      alert("Please fill everything");
-      return;
+  const userEmail = email.value;
+  const reason = document.getElementById("reason").value;
+  const userIP = await getUserIP();
+
+  const code =
+    Math.floor(Math.random()*90+10) + "_" +
+    Math.floor(Math.random()*90000+10000) + "_" +
+    Math.floor(Math.random()*90000+10000) + "_0";
+
+  emailjs.send(
+    "YOUR_SERVICE_ID",
+    "YOUR_TEMPLATE_ID",
+    {
+      user_email: userEmail,
+      reason: reason,
+      ip: userIP,
+      code: code,
+      owner_email: "slayerplx56@gmail.com"
     }
-
-    const key = generateKey();
-
-    const subject = "Protection Request";
-    const body =
-`New protection request
-
-User Email:
-${email}
-
-Reason:
-${reason}
-
-Generated Code:
-${key}
-
-(Reply manually with the key)`;
-
-    window.location.href =
-      `mailto:slayerplx56@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-
-    document.getElementById("finalMsg").innerText =
-      "Check your email every hour. It may come up to 24h.";
-  }
-
-  /* Snow generation */
-  for (let i = 0; i < 50; i++) {
-    const snow = document.createElement("div");
-    snow.className = "snow";
-    snow.innerText = "❄";
-    snow.style.left = Math.random() * 100 + "vw";
-    snow.style.animationDuration = (5 + Math.random() * 10) + "s";
-    snow.style.fontSize = (10 + Math.random() * 20) + "px";
-    document.body.appendChild(snow);
-  }
+  ).then(() => {
+    msg.innerText = "Check your email every hour. It may take up to 24h.";
+  }, () => {
+    msg.innerText = "Something went wrong. Try again later.";
+  });
+});
 </script>
 
 </body>
