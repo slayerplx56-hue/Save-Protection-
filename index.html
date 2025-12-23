@@ -1,214 +1,198 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Save Protection</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <title>Protection Website</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- EmailJS -->
-<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: linear-gradient(180deg, #0b1d3a, #020b1c);
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: radial-gradient(circle at top, #0b2a4a, #020b18);
-  color: white;
-  overflow-x: hidden;
-}
+    h1 {
+      text-align: center;
+      margin-top: 60px;
+      color: #7fd6ff;
+    }
 
-.snow {
-  position: fixed;
-  top: -10px;
-  color: white;
-  font-size: 12px;
-  animation: fall linear infinite;
-}
+    .buttons {
+      text-align: center;
+      margin-top: 20px;
+    }
 
-@keyframes fall {
-  to {
-    transform: translateY(110vh);
-  }
-}
+    .buttons button {
+      background: #5a6d6f;
+      border: none;
+      color: white;
+      padding: 10px 20px;
+      margin: 0 5px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-header {
-  text-align: center;
-  padding: 120px 20px 60px;
-}
+    section {
+      max-width: 700px;
+      margin: 60px auto;
+      padding: 20px;
+    }
 
-header h1 {
-  color: #7dd3ff;
-}
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 16px;
+    }
 
-.buttons {
-  margin-top: 20px;
-}
+    textarea {
+      resize: none;
+      height: 120px;
+    }
 
-.buttons button {
-  padding: 12px 20px;
-  margin: 5px;
-  border: none;
-  background: #3a4a5a;
-  color: white;
-  cursor: pointer;
-  border-radius: 6px;
-}
+    .submit-btn {
+      margin-top: 15px;
+      padding: 10px 25px;
+      background: #5a6d6f;
+      border: none;
+      color: white;
+      border-radius: 6px;
+      cursor: pointer;
+    }
 
-section {
-  max-width: 900px;
-  margin: auto;
-  padding: 60px 20px;
-}
+    #msg {
+      margin-top: 15px;
+      text-align: center;
+    }
 
-.box {
-  background: rgba(255,255,255,0.06);
-  padding: 25px;
-  border-radius: 10px;
-}
+    footer {
+      text-align: center;
+      margin: 40px 0;
+      font-size: 13px;
+      opacity: 0.8;
+    }
 
-input, textarea {
-  width: 100%;
-  padding: 12px;
-  margin-top: 10px;
-  border-radius: 6px;
-  border: none;
-}
+    /* Snow animation */
+    .snow {
+      position: fixed;
+      top: -10px;
+      color: white;
+      user-select: none;
+      animation: fall linear infinite;
+    }
 
-textarea {
-  resize: none;
-  height: 120px;
-}
-
-button.submit {
-  margin-top: 15px;
-  padding: 12px;
-  width: 100%;
-  background: #3a4a5a;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-footer {
-  text-align: center;
-  padding: 20px;
-  opacity: 0.6;
-  font-size: 13px;
-}
-</style>
+    @keyframes fall {
+      to {
+        transform: translateY(110vh);
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-<header>
-  <h1>Welcome to our Protection Website</h1>
-  <div class="buttons">
-    <button onclick="scrollToId('info')">Information</button>
-    <button onclick="scrollToId('contact')">Contact Us</button>
-  </div>
-</header>
+<h1>Welcome to our Protection Website</h1>
+
+<div class="buttons">
+  <button onclick="document.getElementById('info').scrollIntoView()">Information</button>
+  <button onclick="document.getElementById('contact').scrollIntoView()">Contact Us</button>
+</div>
 
 <section id="info">
-  <div class="box">
-    <h2>Information</h2>
-    <p>
-      Our protection system is designed to help reduce basic abuse, misuse,
-      and small automated attacks for games, websites, and small projects.
-    </p>
+  <h2>Information</h2>
+  <p>
+    Our protection system is designed to help reduce basic abuse, misuse,
+    and small automated attacks for games, websites, and small projects.
+  </p>
 
-    <h3>What this protection DOES</h3>
-    <ul>
-      <li>Validates license / key access</li>
-      <li>Blocks fake or reused keys</li>
-      <li>Reduces spam and automated requests</li>
-      <li>Limits basic abuse attempts</li>
-      <li>Supports key expiration</li>
-    </ul>
+  <h3>What this protection DOES</h3>
+  <ul>
+    <li>Validates license / key access</li>
+    <li>Blocks fake or reused keys</li>
+    <li>Reduces spam and automated requests</li>
+    <li>Limits basic abuse attempts</li>
+    <li>Supports key expiration</li>
+  </ul>
 
-    <h3>What this protection DOES NOT do</h3>
-    <ul>
-      <li>Does not stop professional attackers</li>
-      <li>Does not protect against large DDoS attacks</li>
-      <li>Does not guarantee full security</li>
-    </ul>
-  </div>
+  <h3>What this protection DOES NOT do</h3>
+  <ul>
+    <li>Does not stop professional or advanced hackers</li>
+    <li>Does not protect against large DDoS attacks</li>
+    <li>Does not guarantee full security</li>
+  </ul>
 </section>
 
 <section id="contact">
-  <div class="box">
-    <h2>Contact Us</h2>
-    <p>Why do you need protection?</p>
+  <h2>Contact Us</h2>
 
-    <form id="contactForm">
-      <textarea id="reason" placeholder="Reason" required></textarea>
-      <input type="email" id="email" placeholder="Your email" required>
-      <button class="submit" type="submit">Submit</button>
-    </form>
+  <textarea id="reason" placeholder="Why do you need protection?"></textarea>
+  <input type="email" id="email" placeholder="Your email">
 
-    <p id="status" style="margin-top:10px;"></p>
-    <p style="font-size:13px;opacity:.7;">
-      Check your email every hour. It may come up to 24h.
-    </p>
+  <div style="text-align:center;">
+    <button class="submit-btn" onclick="sendForm()">Submit</button>
   </div>
+
+  <p id="msg"></p>
 </section>
 
 <footer>
   © Save Protection — Basic protection service
 </footer>
 
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
+
 <script>
-emailjs.init("YOUR_PUBLIC_KEY"); // 🔴 PUT YOUR PUBLIC KEY
+(function () {
+  emailjs.init("YOUR_PUBLIC_KEY");
+})();
 
-function scrollToId(id) {
-  document.getElementById(id).scrollIntoView({ behavior: "smooth" });
-}
+function sendForm() {
+  const reason = document.getElementById("reason").value.trim();
+  const email = document.getElementById("email").value.trim();
+  const msg = document.getElementById("msg");
 
-// Snow effect
-for (let i = 0; i < 40; i++) {
-  const s = document.createElement("div");
-  s.className = "snow";
-  s.innerHTML = "❄";
-  s.style.left = Math.random() * 100 + "vw";
-  s.style.animationDuration = (5 + Math.random() * 10) + "s";
-  s.style.opacity = Math.random();
-  document.body.appendChild(s);
-}
+  msg.innerText = "";
 
-// Get user IP
-async function getIP() {
-  try {
-    const res = await fetch("https://api.ipify.org?format=json");
-    const data = await res.json();
-    return data.ip;
-  } catch {
-    return "Unknown";
+  if (!reason || !email) {
+    msg.innerText = "Finish your request before submit";
+    return;
   }
-}
-
-document.getElementById("contactForm").addEventListener("submit", async e => {
-  e.preventDefault();
-
-  const reason = document.getElementById("reason").value;
-  const email = document.getElementById("email").value;
-  const ip = await getIP();
 
   emailjs.send(
-    "YOUR_SERVICE_ID",     // 🔴 SERVICE ID
-    "YOUR_TEMPLATE_ID",    // 🔴 TEMPLATE ID
+    "YOUR_SERVICE_ID",
+    "YOUR_TEMPLATE_ID",
     {
-      user_email: email,
-      reason: reason,
-      user_ip: ip
+      name: "Protection Request",
+      email: email,
+      message: reason
     }
-  ).then(() => {
-    document.getElementById("status").innerText =
-      "Request sent successfully.";
-  }, () => {
-    document.getElementById("status").innerText =
-      "Failed to send request.";
+  )
+  .then(() => {
+    msg.innerText = "Check your email every hour. It may come up to 24h.";
+    document.getElementById("reason").value = "";
+    document.getElementById("email").value = "";
+  })
+  .catch(() => {
+    msg.innerText = "Something went wrong. Try again later.";
   });
-});
+}
+
+/* Snow generator */
+for (let i = 0; i < 40; i++) {
+  let snow = document.createElement("div");
+  snow.className = "snow";
+  snow.innerText = "❄";
+  snow.style.left = Math.random() * 100 + "vw";
+  snow.style.animationDuration = 5 + Math.random() * 10 + "s";
+  snow.style.fontSize = 10 + Math.random() * 20 + "px";
+  document.body.appendChild(snow);
+}
 </script>
 
 </body>
